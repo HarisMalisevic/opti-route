@@ -1,7 +1,5 @@
-namespace OptiRoute
-{
-    public static class StaticData
-    {
+namespace OptiRoute {
+    public static class StaticData {
 
         public static Stanica predsjednistvo = new Stanica("Predsjednistvo", Zona.A_CentarGrada);
         public static Stanica tehnickaSkola = new Stanica("Tehnicka skola", Zona.A_CentarGrada);
