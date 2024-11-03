@@ -15,7 +15,7 @@ namespace OptiRoute
         public static Stanica skenderija = new Stanica("Skenderija", Zona.A_CentarGrada);
         public static Stanica jezero = new Stanica("Jezero", Zona.A_CentarGrada);
 
-        public static Dictionary<(Stanica, Stanica), double> tramvajskeLinije = new Dictionary<(Stanica, Stanica), double>
+        public static Dictionary<(Stanica, Stanica), double> staticTramvajskeLinije = new Dictionary<(Stanica, Stanica), double>
             {
                 // Ka Ilidzi
                 {(predsjednistvo, tehnickaSkola), 5},
