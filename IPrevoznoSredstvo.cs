@@ -1,8 +1,5 @@
-namespace OptiRoute
-{
-    public interface IPrevoznoSredstvo
-    {
-        private List<Stanica> podrzaneStanice;
+namespace OptiRoute {
+    public interface IPrevoznoSredstvo {
         public double dajTrajanjeVoznjeMinute(Stanica polaznaStanica, Stanica odredisnaStanica);
 
         public SortedSet<Stanica> dajPolazneStanice();
