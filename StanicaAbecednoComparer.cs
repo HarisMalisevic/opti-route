@@ -1,6 +1,6 @@
 namespace OptiRoute
 {
-    public class StanicaAbecedmoComparer : IComparer<Stanica>
+    public class StanicaAbecednoComparer : IComparer<Stanica>
     {
         public int Compare(Stanica? x, Stanica? y)
         {
