@@ -10,7 +10,7 @@
 
         static void printStartingStations()
         {
-            var tramStations = StaticData.tramStations;
+            var tramStations = StaticData.orderedTramStations;
             Console.WriteLine("Choose a station:");
             for (int i = 0; i < tramStations.Count; i++)
             {

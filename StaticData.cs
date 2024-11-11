@@ -15,7 +15,7 @@ namespace OptiRoute {
         public static Station skenderija = new Station("Skenderija", Zone.A_CentarGrada);
         public static Station jezero = new Station("Jezero", Zone.A_CentarGrada);
 
-        public static List<Station> tramStations = new List<Station>
+        public static List<Station> orderedTramStations = new List<Station>
         {
             predsjednistvo,
             tehnickaSkola,
