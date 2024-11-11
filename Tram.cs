@@ -14,7 +14,7 @@ namespace OptiRoute
 
         public SortedSet<Station> getStartingStations()
         {
-            var startingStations = new SortedSet<Station>(supportedStations, new StanicaAbecednoComparer());
+            var startingStations = new SortedSet<Station>(supportedStations, new StationLexicographicComparer());
             return startingStations;
         }
 
@@ -25,7 +25,7 @@ namespace OptiRoute
                 throw new ArgumentException(message: $"Station {startingStation.Name} not supported.");
             }
 
-            var destinationStation = new SortedSet<Station>(supportedStations, new StanicaAbecednoComparer());
+            var destinationStation = new SortedSet<Station>(supportedStations, new StationLexicographicComparer());
             destinationStation.Remove(startingStation);
 
             return destinationStation;

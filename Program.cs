@@ -2,6 +2,11 @@
 {
     internal class Program
     {
+
+        public static List<ITransportationMethod> transportationMethods = new List<ITransportationMethod>{
+            new Tram(StaticData.orderedTramStations)
+        };
+
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, World!");
@@ -10,11 +15,18 @@
 
         static void printStartingStations()
         {
-            var tramStations = StaticData.orderedTramStations;
-            Console.WriteLine("Choose a station:");
-            for (int i = 0; i < tramStations.Count; i++)
+            var startingStations = new SortedSet<Station>(new StationLexicographicComparer());
+
+            for (int i = 0; i < transportationMethods.Count; i++)
             {
-                Console.WriteLine($"{i + 1}. {tramStations[i].Name}");
+            var method = transportationMethods[i];
+            var stations = method.getStartingStations();
+            startingStations.UnionWith(stations);
+            }
+
+            foreach (var station in startingStations)
+            {
+            Console.WriteLine(station.Name);
             }
         }
     }
