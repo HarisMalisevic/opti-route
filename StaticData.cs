@@ -1,5 +1,7 @@
-namespace OptiRoute {
-    public static class StaticData {
+namespace OptiRoute
+{
+    public static class StaticData
+    {
 
         public static Station predsjednistvo = new Station("Predsjednistvo", Zone.A_CentarGrada);
         public static Station tehnickaSkola = new Station("Tehnicka skola", Zone.A_CentarGrada);
@@ -22,6 +24,31 @@ namespace OptiRoute {
             kampus,
             pofalici,
             ilidza
+        };
+
+        public static List<Station> orderedBusStations = new List<Station>
+        {
+            sutjeska,
+            ciglane,
+            bare,
+            vogosca,
+            ilijas
+        };
+
+        public static int[,] busTravelTimesMinutes = {
+            {0, 6, 12, 22, 47},
+            {6, 0, 8, 11, 27},
+            {12, 6, 0, 6, 12},
+            {24, 11, 6, 0, 6},
+            {51, 16, 12, 6, 0}
+        };
+
+        public static double[,] busTravelPricingKM = {
+            {0, -1, 1.2, 2.0, 3.4},
+            {-1, 0, 1.2, 2.0, 3.4},
+            {1.2, 1.0, 0, 1.2, 2.5},
+            {2.4, 1.4, 1.2, 0, 2.5},
+            {3.4, 1.6, 1.2, 1.0, 0}
         };
 
 
