@@ -1,7 +1,7 @@
 
 namespace OptiRoute
 {
-    public class Bus : ITransportationMethod, ICjenovnik
+    public class Bus : ITransportationMethod, ITransportationPricing
     {
         private List<Station> supportedStations;
 
@@ -66,7 +66,7 @@ namespace OptiRoute
 
         public SortedSet<Station> getStartingStations()
         {
-            SortedSet<Station> startingStations = [.. supportedStations];
+            SortedSet<Station> startingStations = new SortedSet<Station>(supportedStations, new StationLexicographicComparer());
 
             return startingStations;
         }
