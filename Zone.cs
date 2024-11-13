@@ -2,8 +2,8 @@ namespace OptiRoute
 {
     public enum Zone
     {
-        A_CentarGrada,
-        B_Predgradje,
-        C_Periferija
+        A_CITY_CENTER,
+        B_SUBURBS,
+        C_OUTSKIRT
     }
 }
