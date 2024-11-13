@@ -1,6 +1,6 @@
 namespace OptiRoute
 {
-    public class Tram : ITransportationMethod, ICjenovnik
+    public class Tram : ITransportationMethod, ITransportationPricing
     {
 
         const int TIME_BETWEEN_STATIONS_MINUTES = 5;
@@ -31,23 +31,43 @@ namespace OptiRoute
             return destinationStation;
         }
 
-        public double getCommuteDurationMinutes(Station polaznaStanica, Station odredisnaStanica)
+        public double getCommuteDurationMinutes(Station startingStation, Station destinationStation)
         {
 
 
-            var polaznaStanicaIndex = supportedStations.IndexOf(polaznaStanica);
-            var odredisnaStanicaIndex = supportedStations.IndexOf(odredisnaStanica);
+            var startingStationIndex = supportedStations.IndexOf(startingStation);
+            var destinationStationIndex = supportedStations.IndexOf(destinationStation);
 
-            return Math.Abs(polaznaStanicaIndex - odredisnaStanicaIndex) * TIME_BETWEEN_STATIONS_MINUTES;
+            if (startingStationIndex == -1)
+            {
+                throw new ArgumentException(message: $"Starting station {startingStation.Name} not supported.");
+            }
+
+            if (destinationStationIndex == -1)
+            {
+                throw new ArgumentException(message: $"Destination station {destinationStation.Name} not supported.");
+            }
+
+            return Math.Abs(startingStationIndex - destinationStationIndex) * TIME_BETWEEN_STATIONS_MINUTES;
         }
 
-        public double getPriceKM(Station polaznaStanica, Station odredisnaStanica)
+        public double getPriceKM(Station startingStation, Station destinationStation)
         {
 
-            var polaznaStanicaIndex = supportedStations.IndexOf(polaznaStanica);
-            var odredisnaStanicaIndex = supportedStations.IndexOf(odredisnaStanica);
+            var startingStationIndex = supportedStations.IndexOf(startingStation);
+            var destinationStationIndex = supportedStations.IndexOf(destinationStation);
 
-            return Math.Abs(polaznaStanicaIndex - odredisnaStanicaIndex) * PRICE_PER_STATION;
+            if (startingStationIndex == -1)
+            {
+                throw new ArgumentException(message: $"Starting station {startingStation.Name} not supported.");
+            }
+
+            if (destinationStationIndex == -1)
+            {
+                throw new ArgumentException(message: $"Destination station {destinationStation.Name} not supported.");
+            }
+
+            return Math.Abs(startingStationIndex - destinationStationIndex) * PRICE_PER_STATION;
 
         }
 
