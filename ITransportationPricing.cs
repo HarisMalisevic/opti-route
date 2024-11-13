@@ -1,7 +1,7 @@
 namespace OptiRoute
 {
-    public interface ICjenovnik
+    public interface ITransportationPricing
     {
-        public double getPriceKM(Station polaznaStanica, Station odredisnaStanica);
+        public double getPriceKM(Station startingStation, Station destinationStation);
     }
 }
