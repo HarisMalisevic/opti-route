@@ -4,25 +4,13 @@ namespace OptiRoute
 {
     public class Station
     {
-        private string name;
-        private Zone zone;
-
-        public string Name
-        {
-            get { return name; }
-            set { name = value; }
-        }
-
-        public Zone Zone
-        {
-            get { return zone; }
-            set { zone = value; }
-        }
+        public string Name { get; set; }
+        public Zone Zone { get; set; }
 
         public Station(string name, Zone zone)
         {
-            this.name = name;
-            this.zone = zone;
+            Name = name;
+            Zone = zone;
         }
     }
 }
