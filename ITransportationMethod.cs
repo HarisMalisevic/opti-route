@@ -1,9 +1,9 @@
 namespace OptiRoute {
     public interface ITransportationMethod {
-        public double getCommuteDurationMinutes(Station polaznaStanica, Station odredisnaStanica);
+        public double getCommuteDurationMinutes(Station startingStation, Station destinationStation);
 
         public SortedSet<Station> getStartingStations();
-        public SortedSet<Station> getDestinationStations(Station polaznaStanica);
+        public SortedSet<Station> getDestinationStations(Station startingStation);
         //TODO: Potrebno proslijediti IComparer<Stanica> unutar implementacije metode dajOdredisneStanice
     }
 
