@@ -35,39 +35,49 @@ namespace OptiRoute
         {
 
 
-            var startingStationIndex = supportedStations.IndexOf(startingStation);
-            var destinationStationIndex = supportedStations.IndexOf(destinationStation);
+            var startIndex = supportedStations.IndexOf(startingStation);
+            var destinationIndex = supportedStations.IndexOf(destinationStation);
 
-            if (startingStationIndex == -1)
+            if (startIndex == -1)
             {
                 throw new ArgumentException(message: $"Starting station {startingStation.Name} not supported.");
             }
 
-            if (destinationStationIndex == -1)
+            if (destinationIndex == -1)
             {
                 throw new ArgumentException(message: $"Destination station {destinationStation.Name} not supported.");
             }
 
-            return Math.Abs(startingStationIndex - destinationStationIndex) * TIME_BETWEEN_STATIONS_MINUTES;
+            if (startIndex == destinationIndex)
+            {
+                throw new ArgumentException("Starting and destination stations are the same");
+            }
+
+            return Math.Abs(startIndex - destinationIndex) * TIME_BETWEEN_STATIONS_MINUTES;
         }
 
         public double getPriceKM(Station startingStation, Station destinationStation)
         {
 
-            var startingStationIndex = supportedStations.IndexOf(startingStation);
-            var destinationStationIndex = supportedStations.IndexOf(destinationStation);
+            var startIndex = supportedStations.IndexOf(startingStation);
+            var destinationIndex = supportedStations.IndexOf(destinationStation);
 
-            if (startingStationIndex == -1)
+            if (startIndex == -1)
             {
                 throw new ArgumentException(message: $"Starting station {startingStation.Name} not supported.");
             }
 
-            if (destinationStationIndex == -1)
+            if (destinationIndex == -1)
             {
                 throw new ArgumentException(message: $"Destination station {destinationStation.Name} not supported.");
             }
 
-            return Math.Abs(startingStationIndex - destinationStationIndex) * PRICE_PER_STATION;
+            if (startIndex == destinationIndex)
+            {
+                throw new ArgumentException("Starting and destination stations are the same");
+            }
+
+            return Math.Abs(startIndex - destinationIndex) * PRICE_PER_STATION;
 
         }
 
