@@ -87,7 +87,7 @@
                 {
                     stations = method.getDestinationStations(destinationStation);
                 }
-                catch (ArgumentException e)
+                catch (ArgumentException)
                 {
                     // Skip this method if it doesn't support the destination station
                     continue;
