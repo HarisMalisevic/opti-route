@@ -1,4 +1,3 @@
-
 namespace OptiRoute
 {
     public class Bus : ITransportationMethod, ITransportationPricing
@@ -66,9 +65,14 @@ namespace OptiRoute
             int startIndex = supportedStations.IndexOf(startingStation);
             int destinationIndex = supportedStations.IndexOf(destinationStation);
 
-            if (startIndex == -1 || destinationIndex == -1)
+            if (startIndex == -1)
             {
-                throw new ArgumentException("One or both of the stations are not supported by this bus.");
+                throw new ArgumentException(message: $"Starting station {startingStation.Name} not supported.");
+            }
+
+            if (destinationIndex == -1)
+            {
+                throw new ArgumentException(message: $"Destination station {destinationStation.Name} not supported.");
             }
 
             if (startIndex == destinationIndex)
