@@ -16,6 +16,7 @@ namespace OptiRoute
         public static Station ilijas = new Station("Ilijas", Zone.B_SUBURBS);
         public static Station skenderija = new Station("Skenderija", Zone.A_CITY_CENTER);
         public static Station jezero = new Station("Jezero", Zone.A_CITY_CENTER);
+        public static Station grbavica = new Station("Grbavica", Zone.A_CITY_CENTER);
 
         public static List<Station> orderedTramStations = new List<Station>
         {
@@ -51,9 +52,23 @@ namespace OptiRoute
             {3.4, 1.6, 1.2, 1.0, 0}
         };
 
+        public static List<Station> orderedTrolleybusStations = new List<Station>
+        {
+            vogosca,
+            bare,
+            jezero,
+            sutjeska,
+            skenderija,
+            grbavica
+        };
 
-        // public static Dictionary<(Stanica, Stanica), double> autobuskeLinije = new Dictionary<(Stanica, Stanica), double>{};
-
-        // public static Dictionary<(Stanica, Stanica), double> trolejbuskeLinije = new Dictionary<(Stanica, Stanica), double>{};
+        public static int[,] trolleybusTravelTimesMinutes = {
+            {0, 7, 11, 23, 46, 57},
+            {5, 0, 9, 10, 28, 39},
+            {11, 6, 0, 7, 25, 36},
+            {23, 10, 7, 0, 18, 29},
+            {46, 27, 25, 18, 0, 11},
+            {57, 39, 36, 29, 11, 0}
+        };
     }
 }
