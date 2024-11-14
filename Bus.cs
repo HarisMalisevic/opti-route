@@ -12,6 +12,16 @@ namespace OptiRoute
 
         public Bus(List<Station> supportedStations, int[,] travelTimesMinutes, double[,] travelPricesKM)
         {
+            if (travelTimesMinutes.GetLength(0) != supportedStations.Count || travelTimesMinutes.GetLength(1) != supportedStations.Count)
+            {
+                throw new ArgumentException("The dimensions of travelTimesMinutes must match the number of supported stations.");
+            }
+
+            if (travelPricesKM.GetLength(0) != supportedStations.Count || travelPricesKM.GetLength(1) != supportedStations.Count)
+            {
+                throw new ArgumentException("The dimensions of travelPricesKM must match the number of supported stations.");
+            }
+
             this.supportedStations = supportedStations;
             this.travelTimesMinutes = travelTimesMinutes;
             this.travelPricesKM = travelPricesKM;
