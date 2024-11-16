@@ -3,13 +3,32 @@ namespace OptiRoute
     public class Tram : ITransportationMethod
     {
 
-        const int TIME_BETWEEN_STATIONS_MINUTES = 5;
-        const double PRICE_PER_STATION = 0.5;
+        private int timeBetweenStationsMinutes;
+        private double pricePerStationKM;
+        public int TimeBetweenStationsMinutes
+        {
+            get { return timeBetweenStationsMinutes; }
+            set { timeBetweenStationsMinutes = value; }
+        }
+
+        public double PricePerStationKM
+        {
+            get { return pricePerStationKM; }
+            set { pricePerStationKM = value; }
+        }
+
+        public List<Station> SupportedStations
+        {
+            get { return supportedStations; }
+            set { supportedStations = value; }
+        }
         private List<Station> supportedStations;
 
-        public Tram(List<Station> supportedStations)
+        public Tram(List<Station> supportedStations, int timeBetweenStationsMinutes = 5, double pricePerStationKM = 0.5)
         {
             this.supportedStations = supportedStations;
+            this.timeBetweenStationsMinutes = timeBetweenStationsMinutes;
+            this.pricePerStationKM = pricePerStationKM;
         }
 
         public SortedSet<Station> getStartingStations()
@@ -53,7 +72,7 @@ namespace OptiRoute
                 throw new ArgumentException("Starting and destination stations are the same");
             }
 
-            return Math.Abs(startIndex - destinationIndex) * TIME_BETWEEN_STATIONS_MINUTES;
+            return Math.Abs(startIndex - destinationIndex) * timeBetweenStationsMinutes;
         }
 
         public double getPriceKM(Station startingStation, Station destinationStation)
@@ -77,7 +96,7 @@ namespace OptiRoute
                 throw new ArgumentException("Starting and destination stations are the same");
             }
 
-            return Math.Abs(startIndex - destinationIndex) * PRICE_PER_STATION;
+            return Math.Abs(startIndex - destinationIndex) * pricePerStationKM;
 
         }
 
