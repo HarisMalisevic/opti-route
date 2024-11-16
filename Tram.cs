@@ -1,6 +1,6 @@
 namespace OptiRoute
 {
-    public class Tram : ITransportationMethod, ITransportationPricing
+    public class Tram : ITransportationMethod
     {
 
         const int TIME_BETWEEN_STATIONS_MINUTES = 5;

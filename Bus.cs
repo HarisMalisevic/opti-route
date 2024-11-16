@@ -1,6 +1,6 @@
 namespace OptiRoute
 {
-    public class Bus : ITransportationMethod, ITransportationPricing
+    public class Bus : ITransportationMethod
     {
         private List<Station> supportedStations;
 
