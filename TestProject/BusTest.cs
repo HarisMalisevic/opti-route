@@ -184,12 +184,12 @@ public sealed class BusTest
 
         Station stationD = new Station("Fourth Station", Zone.C_OUTSKIRT);
 
-        SortedSet<Station> EXPECTED_RESAULT = new SortedSet<Station>(new StationLexicographicComparer()) { stationB, stationC };
+        var EXPECTED_RESAULT = new SortedSet<Station>(new StationLexicographicComparer()) { stationB, stationC };
 
         // Act
         SortedSet<Station> result = bus.getDestinationStations(stationA);
 
         // Assert        
-        Assert.AreEqual(result, EXPECTED_RESAULT);
+        CollectionAssert.AreEqual(EXPECTED_RESAULT, result);
     }
 }
