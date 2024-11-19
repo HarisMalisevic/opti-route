@@ -11,6 +11,11 @@ namespace OptiRoute
 
         public Bus(List<Station> supportedStations, int[,] travelTimesMinutes, double[,] travelPricesKM)
         {
+            if (supportedStations.Distinct().Count() != supportedStations.Count)
+            {
+                throw new ArgumentException("The list of supported stations contains duplicates.");
+            }
+            
             if (travelTimesMinutes.GetLength(0) != supportedStations.Count || travelTimesMinutes.GetLength(1) != supportedStations.Count)
             {
                 throw new ArgumentException("The dimensions of travelTimesMinutes must match the number of supported stations.");
