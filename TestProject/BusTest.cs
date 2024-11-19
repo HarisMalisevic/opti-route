@@ -330,4 +330,54 @@ public sealed class BusTest
         // Assert
         Assert.AreEqual(result, EXPECTED_PRICE);
     }
+
+    [TestMethod]
+    public void getStartingStations_ThreeStations_ContainsThreeStations()
+    {
+        // Arrange
+
+        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
+        Station stationB = new Station("Second Station", Zone.B_SUBURBS);
+        Station stationC = new Station("Third Station", Zone.C_OUTSKIRT);
+
+        List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
+
+        int[,] travelTimesMinutes = new int[,] { { 0, 5, 7 }, { 4, 0, 3 }, { 6, 4, 0 } };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2, 1.3 }, { 1.2, 0, 1.1 }, { 1.2, 1.1, 0 } };
+
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        var EXPECTED_RESAULT = new SortedSet<Station>(new StationLexicographicComparer()) { stationA, stationB, stationC };
+
+        // Act
+        SortedSet<Station> result = bus.getStartingStations();
+
+        // Assert        
+        CollectionAssert.AreEqual(EXPECTED_RESAULT, result);
+    }
+
+    [TestMethod]
+    public void getStartingStations_NotOrderedStations_LexicographicallySortedStations()
+    {
+        // Arrange
+
+        Station station1 = new Station("A station", Zone.A_CITY_CENTER);
+        Station station2 = new Station("B station", Zone.B_SUBURBS);
+        Station station3 = new Station("B Xtation", Zone.C_OUTSKIRT);
+
+        List<Station> supportedStations = new List<Station> { station3, station1, station2 };
+
+        int[,] travelTimesMinutes = new int[,] { { 0, 5, 7 }, { 4, 0, 3 }, { 6, 4, 0 } };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2, 1.3 }, { 1.2, 0, 1.1 }, { 1.2, 1.1, 0 } };
+
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        var EXPECTED_RESAULT = new SortedSet<Station>(new StationLexicographicComparer()) { station1, station2, station3 };
+
+        // Act
+        SortedSet<Station> result = bus.getStartingStations();
+
+        // Assert
+        CollectionAssert.AreEqual(EXPECTED_RESAULT, result);
+    }
 }
