@@ -66,6 +66,27 @@ public sealed class BusTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
+    public void Bus_DuplicatesInSupportedStations_ThrowsArgumentException()
+    {
+        // Arrange
+
+        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
+        Station stationB = new Station("Second Station", Zone.A_CITY_CENTER);
+
+        List<Station> supportedStations = new List<Station> { stationA, stationB, stationA };
+
+        int[,] travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
+
+        // Act
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        // Assert        
+        // No assert needed, the exception is expected
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
     public void getCommuteDurationMinutes_UnsupportedStartingStation_ThrowsArgumentException()
     {
         // Arrange
