@@ -5,6 +5,8 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OptiRoute", "OptiRoute.csproj", "{E61B9E51-A24C-4509-BC96-A103585B1CFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject", "TestProject\TestProject.csproj", "{72F3307A-E1C9-4B6D-B3E6-22C1C3E48B3D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{E61B9E51-A24C-4509-BC96-A103585B1CFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E61B9E51-A24C-4509-BC96-A103585B1CFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E61B9E51-A24C-4509-BC96-A103585B1CFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{72F3307A-E1C9-4B6D-B3E6-22C1C3E48B3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{72F3307A-E1C9-4B6D-B3E6-22C1C3E48B3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{72F3307A-E1C9-4B6D-B3E6-22C1C3E48B3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{72F3307A-E1C9-4B6D-B3E6-22C1C3E48B3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
