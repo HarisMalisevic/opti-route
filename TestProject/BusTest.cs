@@ -46,6 +46,26 @@ public sealed class BusTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
+    public void Bus_MoreTravelTimesThanStations_ThrowsArgumentException()
+    {
+        // Arrange
+
+        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
+
+        List<Station> supportedStations = new List<Station> { stationA };
+
+        int[,] travelTimesMinutes = new int[,] { { 0, 5, 7 }, { 4, 0, 3 }, { 6, 4, 0 } };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2, 1.3 }, { 1.2, 0, 1.1 }, { 1.2, 1.1, 0 } };
+
+        // Act
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        // Assert        
+        // No assert needed, the exception is expected
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
     public void getCommuteDurationMinutes_UnsupportedStartingStation_ThrowsArgumentException()
     {
         // Arrange
@@ -192,4 +212,26 @@ public sealed class BusTest
         // Assert        
         CollectionAssert.AreEqual(EXPECTED_RESAULT, result);
     }
+
+    [TestMethod]
+    public void getDestinationStations_OnlyOneStationSupported_ReturnsEmptyCollection()
+    {
+        // Arrange
+
+        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
+
+        List<Station> supportedStations = new List<Station> { stationA };
+
+        int[,] travelTimesMinutes = new int[,] { { 0 } };
+        double[,] travelPricesKM = new double[,] { { 0 } };
+
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        // Act
+        SortedSet<Station> result = bus.getDestinationStations(stationA);
+
+        // Assert        
+        Assert.AreEqual(result.Count, 0);
+    }
+
 }
