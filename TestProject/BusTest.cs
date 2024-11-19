@@ -234,4 +234,100 @@ public sealed class BusTest
         Assert.AreEqual(result.Count, 0);
     }
 
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void getPriceKM_UnsupportedStartingStation_ThrowsArgumentException()
+    {
+        // Arrange
+
+        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
+        Station stationB = new Station("Second Station", Zone.B_SUBURBS);
+
+        List<Station> supportedStations = new List<Station> { stationA, stationB };
+
+        int[,] travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
+
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        Station stationC = new Station("Third station", Zone.B_SUBURBS);
+
+        // Act
+        double result = bus.getPriceKM(stationC, stationA);
+
+        // Assert
+        // No assert needed, the exception is expected
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void getPriceKM_UnsupportedDestinationStation_ThrowsArgumentException()
+    {
+        // Arrange
+
+        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
+        Station stationB = new Station("Second Station", Zone.B_SUBURBS);
+
+        List<Station> supportedStations = new List<Station> { stationA, stationB };
+
+        int[,] travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
+
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        Station stationC = new Station("Third station", Zone.B_SUBURBS);
+
+        // Act
+        double result = bus.getPriceKM(stationA, stationC);
+
+        // Assert
+        // No assert needed, the exception is expected
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void getPriceKM_SameStartingAndDestination_ThrowsArgumentException()
+    {
+        // Arrange
+
+        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
+        Station stationB = new Station("Second Station", Zone.B_SUBURBS);
+
+        List<Station> supportedStations = new List<Station> { stationA, stationB };
+
+        int[,] travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
+
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        // Act
+        double result = bus.getPriceKM(stationA, stationA);
+
+        // Assert
+        // No assert needed, the exception is expected
+    }
+
+    [TestMethod]
+    public void getPriceKM_Stations5MinutesAway_Returns1_2()
+    {
+        // Arrange
+
+        const double EXPECTED_PRICE = 1.2;
+
+        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
+        Station stationB = new Station("Second Station", Zone.B_SUBURBS);
+
+        List<Station> supportedStations = new List<Station> { stationA, stationB };
+
+        int[,] travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
+
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        // Act
+        double result = bus.getPriceKM(stationA, stationB);
+
+        // Assert
+        Assert.AreEqual(result, EXPECTED_PRICE);
+    }
 }
