@@ -16,7 +16,7 @@ public sealed class BusTest
         };
 
         int[,] travelTimesMinutes = new int[1, 2];
-        double[,] travelPricesKM = new double[,] { { 0, 2.0 }, { 3.0, 0} };
+        double[,] travelPricesKM = new double[,] { { 0, 2.0 }, { 3.0, 0 } };
 
         // Act
         Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
@@ -55,7 +55,7 @@ public sealed class BusTest
         List<Station> supportedStations = new List<Station> { stationA, stationB };
 
         int[,] travelTimesMinutes = new int[,] { { 0, 2 }, { 3, 0 } };
-        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0} };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
 
         Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
 
@@ -105,7 +105,7 @@ public sealed class BusTest
         List<Station> supportedStations = new List<Station> { stationA, stationB };
 
         int[,] travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
-        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0} };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
 
         Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
 
@@ -129,7 +129,7 @@ public sealed class BusTest
         List<Station> supportedStations = new List<Station> { stationA, stationB };
 
         int[,] travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
-        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0} };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
 
         Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
 
@@ -153,7 +153,7 @@ public sealed class BusTest
         List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
 
         int[,] travelTimesMinutes = new int[,] { { 0, 5, 7 }, { 4, 0, 3 }, { 6, 4, 0 } };
-        double[,] travelPricesKM = new double[,] { { 0, 1.2, 1.3}, { 1.2, 0, 1.1}, { 1.2, 1.1, 0} };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2, 1.3 }, { 1.2, 0, 1.1 }, { 1.2, 1.1, 0 } };
 
         Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
 
@@ -164,5 +164,32 @@ public sealed class BusTest
 
         // Assert
         // No assert needed, the exception is expected
+    }
+
+    [TestMethod]
+    public void getDestinationStations_SupportedStartingStation_ReturnsTwoStations()
+    {
+        // Arrange
+
+        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
+        Station stationB = new Station("Second Station", Zone.B_SUBURBS);
+        Station stationC = new Station("Third Station", Zone.C_OUTSKIRT);
+
+        List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
+
+        int[,] travelTimesMinutes = new int[,] { { 0, 5, 7 }, { 4, 0, 3 }, { 6, 4, 0 } };
+        double[,] travelPricesKM = new double[,] { { 0, 1.2, 1.3 }, { 1.2, 0, 1.1 }, { 1.2, 1.1, 0 } };
+
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        Station stationD = new Station("Fourth Station", Zone.C_OUTSKIRT);
+
+        SortedSet<Station> EXPECTED_RESAULT = new SortedSet<Station>(new StationLexicographicComparer()) { stationB, stationC };
+
+        // Act
+        SortedSet<Station> result = bus.getDestinationStations(stationA);
+
+        // Assert        
+        Assert.AreEqual(result, EXPECTED_RESAULT);
     }
 }
