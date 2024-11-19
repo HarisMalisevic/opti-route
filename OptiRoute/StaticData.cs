@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace OptiRoute
 {
+    [ExcludeFromCodeCoverage]
     public static class StaticData
     {
 
