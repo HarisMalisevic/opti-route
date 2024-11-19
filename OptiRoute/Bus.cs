@@ -51,7 +51,7 @@ namespace OptiRoute
 
             for (int i = 0; i < travelTimesMinutes.GetLength(1); i++)
             {
-                if (travelTimesMinutes[startIndex, i] != -1)
+                if (i != startIndex && travelTimesMinutes[startIndex, i] != -1)
                 {
                     destinationStations.Add(supportedStations[i]);
                 }
