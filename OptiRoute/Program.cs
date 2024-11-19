@@ -1,5 +1,8 @@
-﻿namespace OptiRoute
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace OptiRoute
 {
+    [ExcludeFromCodeCoverage]
     internal class Program
     {
 
