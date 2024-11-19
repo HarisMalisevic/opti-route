@@ -41,7 +41,7 @@ namespace OptiRoute
 
         public SortedSet<Station> getDestinationStations(Station startingStation)
         {
-            SortedSet<Station> destinationStations = new SortedSet<Station>((new StationLexicographicComparer()));
+            SortedSet<Station> destinationStations = new SortedSet<Station>(new StationLexicographicComparer());
             int startIndex = supportedStations.IndexOf(startingStation);
 
             if (startIndex == -1)
