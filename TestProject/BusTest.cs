@@ -134,51 +134,38 @@ public sealed class BusTest
     }
 
     [TestMethod]
-    public void getCommuteDurationMinutes_Stations5MinutesAway_Returns5()
+    [DataRow(0, 2)]
+    [DataRow(0, 3)]
+    [DataRow(0, 4)]
+    [DataRow(1, 3)]
+    [DataRow(1, 4)]
+    [DataRow(2, 3)]
+    [DataRow(3, 2)]
+    [DataRow(4, 2)]
+    [DataRow(4, 1)]
+    public void getCommuteDurationAndPrice_ValidStations_ReturnsExpectedValues(int startIndex, int destinationIndex)
     {
         // Arrange
 
-        const double EXPECTED_MINUTES = 5.0;
+        Station startingStation;
+        Station destinationStation;
+        double expectedTravelTime;
+        double expectedTravelPrice;
 
-        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
-        Station stationB = new Station("Second Station", Zone.B_SUBURBS);
+        (startingStation, destinationStation, expectedTravelTime, expectedTravelPrice) = StaticTestData.GetBusTravelData(startIndex, destinationIndex);
 
-        List<Station> supportedStations = new List<Station> { stationA, stationB };
-
-        int[,] travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
-        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
-
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Bus bus = new Bus(StaticTestData.orderedBusStations, StaticTestData.busTravelTimesMinutes, StaticTestData.busTravelPricingKM);
 
         // Act
-        double result = bus.getCommuteDurationMinutes(stationA, stationB);
+
+        double resultTravelTime = bus.getCommuteDurationMinutes(startingStation, destinationStation);
+        double resultTravelPrice = bus.getPriceKM(startingStation, destinationStation);
 
         // Assert
-        Assert.AreEqual(result, EXPECTED_MINUTES);
-    }
 
-    [TestMethod]
-    public void getCommuteDurationMinutes_Stations4MinutesAway_Returns4() //TODO: RENAME!
-    {
-        // Arrange
+        Assert.AreEqual(expectedTravelTime, resultTravelTime);
+        Assert.AreEqual(expectedTravelPrice, resultTravelPrice);
 
-        const double EXPECTED_MINUTES = 4.0;
-
-        Station stationA = new Station("First Station", Zone.A_CITY_CENTER);
-        Station stationB = new Station("Second Station", Zone.B_SUBURBS);
-
-        List<Station> supportedStations = new List<Station> { stationA, stationB };
-
-        int[,] travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
-        double[,] travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
-
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
-
-        // Act
-        double result = bus.getCommuteDurationMinutes(stationB, stationA);
-
-        // Assert
-        Assert.AreEqual(result, EXPECTED_MINUTES);
     }
 
     [TestMethod]

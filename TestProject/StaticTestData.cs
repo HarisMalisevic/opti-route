@@ -57,6 +57,15 @@ public static class StaticTestData
             {3.4, 1.6, 1.2, 1.0, 0}
         };
 
+    public static (Station, Station, int, double) GetBusTravelData(int startIndex, int destinationIndex)
+    {
+        var startingStation = orderedBusStations[startIndex];
+        var destinationStation = orderedBusStations[destinationIndex];
+        var travelTime = busTravelTimesMinutes[startIndex, destinationIndex];
+        var travelPrice = busTravelPricingKM[startIndex, destinationIndex];
+        return (startingStation, destinationStation, travelTime, travelPrice);
+    }
+
     public static List<Station> orderedTrolleybusStations = new List<Station>
         {
             vogosca,
