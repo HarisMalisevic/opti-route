@@ -26,6 +26,22 @@ namespace OptiRoute
 
         public Tram(List<Station> supportedStations, int timeBetweenStationsMinutes = 5, double pricePerStationKM = 0.5)
         {
+
+            if (supportedStations.Distinct().Count() != supportedStations.Count)
+            {
+                throw new ArgumentException("The list of supported stations contains duplicates.");
+            }
+
+            if (timeBetweenStationsMinutes <= 0)
+            {
+                throw new ArgumentException("Time between stations must be a positive number.");
+            }
+
+            if (pricePerStationKM <= 0)
+            {
+                throw new ArgumentException("Price per station per kilometer must be a positive number.");
+            }
+
             this.supportedStations = supportedStations;
             this.timeBetweenStationsMinutes = timeBetweenStationsMinutes;
             this.pricePerStationKM = pricePerStationKM;
