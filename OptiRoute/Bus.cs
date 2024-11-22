@@ -41,6 +41,11 @@ namespace OptiRoute
                 throw new ArgumentException("One or both of the stations are not supported by this bus.");
             }
 
+            if (startIndex == destinationIndex)
+            {
+                throw new ArgumentException("Starting and destination stations are the same");
+            }
+
             return travelTimesMinutes[startIndex, destinationIndex];
         }
 
