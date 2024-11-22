@@ -143,7 +143,7 @@ public sealed class BusTest
     [DataRow(3, 2)]
     [DataRow(4, 2)]
     [DataRow(4, 1)]
-    public void getCommuteDurationAndPrice_ValidStations_ReturnsExpectedValues(int startIndex, int destinationIndex)
+    public void getCommuteDurationAndPrice_ValidStationsDataRow_ReturnsExpectedValues(int startIndex, int destinationIndex)
     {
         // Arrange
 
@@ -167,6 +167,41 @@ public sealed class BusTest
         Assert.AreEqual(expectedTravelPrice, resultTravelPrice);
 
     }
+
+    public static IEnumerable<object[]> ValidBusTravelData
+    {
+        get
+        {
+            return new[]
+            {
+                new object[] {StaticTestData.vogosca, StaticTestData.ilijas, 6, 2.5},
+                new object[] {StaticTestData.vogosca, StaticTestData.vogosca, 0, 0},
+                new object[] {StaticTestData.sutjeska, StaticTestData.bare, 12, 1.2},
+                new object[] {StaticTestData.bare, StaticTestData.ilijas, 12, 2.5},
+            };
+        }
+    }
+
+    [TestMethod]
+    [DynamicData(nameof(ValidBusTravelData))]
+    public void getCommuteDurationAndPrice_ValidStationsDynamicData_ReturnsExpectedValues(Station startingStation, Station destinationStation, double expectedTravelTime, double expectedTravelPrice)
+    {
+        // Arrange
+
+        Bus bus = new Bus(StaticTestData.orderedBusStations, StaticTestData.busTravelTimesMinutes, StaticTestData.busTravelPricingKM);
+
+        // Act
+
+        double resultTravelTime = bus.getCommuteDurationMinutes(startingStation, destinationStation);
+        double resultTravelPrice = bus.getPriceKM(startingStation, destinationStation);
+
+        // Assert
+
+        Assert.AreEqual(expectedTravelTime, resultTravelTime);
+        Assert.AreEqual(expectedTravelPrice, resultTravelPrice);
+
+    }
+
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
