@@ -133,6 +133,28 @@ public sealed class BusTest
         // No assert needed, the exception is expected
     }
 
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException))]
+    public void getCommuteDurationMinutes_SameStartingAndDestination_ThrowsArgumentException()
+    {
+        // Arrange
+
+        List<Station> supportedStations = new List<Station> { stationA, stationB };
+
+        travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
+        travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
+
+        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+
+        // Act
+        double result = bus.getCommuteDurationMinutes(stationA, stationA);
+
+        // Assert
+        // No assert needed, the exception is expected
+    }
+
+
     [TestMethod]
     [DataRow(0, 2)]
     [DataRow(0, 3)]
@@ -143,7 +165,7 @@ public sealed class BusTest
     [DataRow(3, 2)]
     [DataRow(4, 2)]
     [DataRow(4, 1)]
-    public void getCommuteDurationAndPrice_ValidStationsDataRow_ReturnsExpectedValues(int startIndex, int destinationIndex)
+    public void getCommuteDurationMinutes_ValidStationsDataRow_ReturnsExpectedValues(int startIndex, int destinationIndex)
     {
         // Arrange
 
@@ -172,7 +194,7 @@ public sealed class BusTest
 
     [TestMethod]
     [DynamicData(nameof(ValidBusTravelData))]
-    public void getCommuteDurationAndPrice_ValidStationsDynamicData_ReturnsExpectedValues(Station startingStation, Station destinationStation, double expectedTravelTime, double expectedTravelPrice)
+    public void getCommuteDurationKM_ValidStationsDynamicData_ReturnsExpectedValues(Station startingStation, Station destinationStation, double expectedTravelTime, double expectedTravelPrice)
     {
         // Arrange
 
@@ -216,8 +238,6 @@ public sealed class BusTest
         List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
 
         Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
-
-        Station stationD = new Station("Unsupported station", Zone.B_SUBURBS);
 
         var EXPECTED_RESAULT = new SortedSet<Station>(new StationLexicographicComparer()) { stationB, stationC };
 
@@ -314,15 +334,13 @@ public sealed class BusTest
 
     [TestMethod]
     [DynamicData(nameof(ValidBusTravelData))]
-    public void getPriceKM_CommuteDurationAndPrice_ValidStationsDynamicData_ReturnsExpectedValues(Station startingStation, Station destinationStation, double expectedTravelTime, double expectedTravelPrice)
+    public void getPriceKM_ValidStationsDynamicData_ReturnsExpectedValues(Station startingStation, Station destinationStation, double expectedTravelTime, double expectedTravelPrice)
     {
         // Arrange
 
         Bus bus = new Bus(StaticTestData.orderedBusStations, StaticTestData.busTravelTimesMinutes, StaticTestData.busTravelPricingKM);
 
         // Act
-
-        double resultTravelTime = bus.getCommuteDurationMinutes(startingStation, destinationStation);
         double resultTravelPrice = bus.getPriceKM(startingStation, destinationStation);
 
         // Assert
