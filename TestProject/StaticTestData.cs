@@ -84,4 +84,12 @@ public static class StaticTestData
             {46, 27, 25, 18, 0, 11},
             {57, 39, 36, 29, 11, 0}
         };
+
+    public static (Station, Station, int) GetTrolleybusTravelData(int startIndex, int destinationIndex)
+    {
+        var startingStation = orderedTrolleybusStations[startIndex];
+        var destinationStation = orderedTrolleybusStations[destinationIndex];
+        var travelTime = trolleybusTravelTimesMinutes[startIndex, destinationIndex];
+        return (startingStation, destinationStation, travelTime);
+    }
 }

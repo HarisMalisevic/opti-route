@@ -1,55 +1,57 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using OptiRoute;
 
 namespace TestProject;
 
 [TestClass]
 [ExcludeFromCodeCoverage]
-public sealed class BusTest
+public sealed class TrolleybusTest
 {
 
-    public static IEnumerable<object[]> ValidBusTravelData
+    public static IEnumerable<object[]> ValidTrolleybusTravelData
     {
         get
         {
             return new[]
             {
-                new object[] {StaticTestData.vogosca, StaticTestData.ilijas, 6, 2.5},
-                new object[] {StaticTestData.sutjeska, StaticTestData.bare, 12, 1.2},
-                new object[] {StaticTestData.bare, StaticTestData.ilijas, 12, 2.5},
+                new object[] {StaticTestData.vogosca, StaticTestData.bare, 7, 2.4},
+                new object[] {StaticTestData.sutjeska, StaticTestData.bare, 10, 1.2},
+                new object[] {StaticTestData.bare, StaticTestData.grbavica, 39, 1.2},
+                new object[] {StaticTestData.grbavica, StaticTestData.sutjeska, 29, 1.2}
             };
         }
     }
 
     private Station stationA = new Station("A", Zone.A_CITY_CENTER);
-    private Station stationB = new Station("B", Zone.A_CITY_CENTER);
-    private Station stationC = new Station("C", Zone.A_CITY_CENTER);
+    private Station stationB = new Station("B", Zone.B_SUBURBS);
+    private Station stationC = new Station("C", Zone.C_OUTSKIRT);
 
     private int[,] travelTimesMinutes = new int[,] { { 0, 5, 7 }, { 4, 0, 3 }, { 6, 4, 0 } };
-    private double[,] travelPricesKM = new double[,] { { 0, 1.2, 1.3 }, { 1.2, 0, 1.1 }, { 1.2, 1.1, 0 } };
+
+    private double pricePerZoneTraveledKM = 1.2;
 
 
     [TestInitialize]
     public void TestInitialize()
     {
         stationA = new Station("A", Zone.A_CITY_CENTER);
-        stationB = new Station("B", Zone.A_CITY_CENTER);
-        stationC = new Station("C", Zone.A_CITY_CENTER);
+        stationB = new Station("B", Zone.B_SUBURBS);
+        stationC = new Station("C", Zone.C_OUTSKIRT);
         travelTimesMinutes = new int[,] { { 0, 5, 7 }, { 4, 0, 3 }, { 6, 4, 0 } };
-        travelPricesKM = new double[,] { { 0, 1.2, 1.3 }, { 1.2, 0, 1.1 }, { 1.2, 1.1, 0 } };
+        pricePerZoneTraveledKM = 1.2;
     }
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
-    public void Bus_TimesMatrixNotSquare_ThrowsArgumentException()
+    public void Trolleybus_TimesMatrixNotSquare_ThrowsArgumentException()
     {
         // Arrange
         List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
 
-        travelTimesMinutes = new int[1, 2];
+        travelTimesMinutes = new int[1, 2] { { 0, 5 } }; // Not square matrix
 
         // Act
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         // Assert
         // No assert needed, the exception is expected
@@ -57,30 +59,14 @@ public sealed class BusTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
-    public void Bus_PricesMatrixNotSquare_ThrowsArgumentException()
-    {
-        // 
-        List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
-
-        travelPricesKM = new double[1, 2];
-
-        // Act
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
-
-        // Assert
-        // No assert needed, the exception is expected
-    }
-
-    [TestMethod]
-    [ExpectedException(typeof(ArgumentException))]
-    public void Bus_MoreTravelTimesThanStations_ThrowsArgumentException()
+    public void Trolleybus_MoreTravelTimesThanStations_ThrowsArgumentException()
     {
         // Arrange
 
         List<Station> supportedStations = new List<Station> { stationA, stationB };
 
         // Act
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         // Assert        
         // No assert needed, the exception is expected
@@ -88,14 +74,14 @@ public sealed class BusTest
 
     [TestMethod]
     [ExpectedException(typeof(ArgumentException))]
-    public void Bus_DuplicatesInSupportedStations_ThrowsArgumentException()
+    public void Trolleybus_DuplicatesInSupportedStations_ThrowsArgumentException()
     {
         // Arrange
 
         List<Station> supportedStations = new List<Station> { stationA, stationB, stationA };
 
         // Act
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         // Assert        
         // No assert needed, the exception is expected
@@ -109,10 +95,10 @@ public sealed class BusTest
 
         List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         // Act
-        double result = bus.getCommuteDurationMinutes(new Station("Unsupported station", Zone.B_SUBURBS), stationA);
+        double result = Trolleybus.getCommuteDurationMinutes(new Station("Unsupported station", Zone.B_SUBURBS), stationA);
 
         // Assert
         // No assert needed, the exception is expected
@@ -126,10 +112,10 @@ public sealed class BusTest
 
         List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         // Act
-        double result = bus.getCommuteDurationMinutes(stationA, new Station("Unsupported station", Zone.B_SUBURBS));
+        double result = Trolleybus.getCommuteDurationMinutes(stationA, new Station("Unsupported station", Zone.B_SUBURBS));
 
         // Assert
         // No assert needed, the exception is expected
@@ -145,12 +131,12 @@ public sealed class BusTest
         List<Station> supportedStations = new List<Station> { stationA, stationB };
 
         travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
-        travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
+        pricePerZoneTraveledKM = 1.2;
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         // Act
-        double result = bus.getCommuteDurationMinutes(stationA, stationA);
+        double result = Trolleybus.getCommuteDurationMinutes(stationA, stationA);
 
         // Assert
         // No assert needed, the exception is expected
@@ -158,53 +144,43 @@ public sealed class BusTest
 
 
     [TestMethod]
-    [DataRow(0, 2)]
-    [DataRow(0, 3)]
-    [DataRow(0, 4)]
+    [DataRow(0, 1)]
+    [DataRow(1, 0)]
     [DataRow(1, 3)]
     [DataRow(1, 4)]
-    [DataRow(2, 3)]
-    [DataRow(3, 2)]
-    [DataRow(4, 2)]
-    [DataRow(4, 1)]
+    [DataRow(3, 1)]
     public void getCommuteDurationMinutes_ValidStationsDataRow_ReturnsExpectedValues(int startIndex, int destinationIndex)
     {
         // Arrange
 
-        Station startingStation;
-        Station destinationStation;
-        double expectedTravelTime;
-        double expectedTravelPrice;
+       Station startingStation;
+       Station destinationStation;
+       int expectedTravelTimeMinutes;
 
-        (startingStation, destinationStation, expectedTravelTime, expectedTravelPrice) = StaticTestData.GetBusTravelData(startIndex, destinationIndex);
+       (startingStation, destinationStation, expectedTravelTimeMinutes) = StaticTestData.GetTrolleybusTravelData(startIndex, destinationIndex);
 
-        Bus bus = new Bus(StaticTestData.orderedBusStations, StaticTestData.busTravelTimesMinutes, StaticTestData.busTravelPricingKM);
+       Trolleybus trolleybus = new Trolleybus(StaticTestData.orderedTrolleybusStations, StaticTestData.trolleybusTravelTimesMinutes, pricePerZoneTraveledKM);
 
         // Act
-
-        double resultTravelTime = bus.getCommuteDurationMinutes(startingStation, destinationStation);
-        double resultTravelPrice = bus.getPriceKM(startingStation, destinationStation);
+        double resultTravelTime = trolleybus.getCommuteDurationMinutes(startingStation, destinationStation);
 
         // Assert
-
-        Assert.AreEqual(expectedTravelTime, resultTravelTime);
-        Assert.AreEqual(expectedTravelPrice, resultTravelPrice);
+        Assert.AreEqual(expectedTravelTimeMinutes, resultTravelTime);
 
     }
 
 
-
     [TestMethod]
-    [DynamicData(nameof(ValidBusTravelData))]
+    [DynamicData(nameof(ValidTrolleybusTravelData))]
     public void getCommuteDurationKM_ValidStationsDynamicData_ReturnsExpectedValues(Station startingStation, Station destinationStation, double expectedTravelTime, double expectedTravelPrice)
     {
         // Arrange
 
-        Bus bus = new Bus(StaticTestData.orderedBusStations, StaticTestData.busTravelTimesMinutes, StaticTestData.busTravelPricingKM);
+        Trolleybus Trolleybus = new Trolleybus(StaticTestData.orderedTrolleybusStations, StaticTestData.trolleybusTravelTimesMinutes, pricePerZoneTraveledKM);
 
         // Act
 
-        double resultTravelTime = bus.getCommuteDurationMinutes(startingStation, destinationStation);
+        double resultTravelTime = Trolleybus.getCommuteDurationMinutes(startingStation, destinationStation);
 
         // Assert
 
@@ -221,12 +197,12 @@ public sealed class BusTest
 
         List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         Station stationD = new Station("Unsupported station", Zone.B_SUBURBS);
 
         // Act
-        SortedSet<Station> result = bus.getDestinationStations(stationD);
+        SortedSet<Station> result = Trolleybus.getDestinationStations(stationD);
 
         // Assert
         // No assert needed, the exception is expected
@@ -239,12 +215,12 @@ public sealed class BusTest
 
         List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         var EXPECTED_RESAULT = new SortedSet<Station>(new StationLexicographicComparer()) { stationB, stationC };
 
         // Act
-        SortedSet<Station> result = bus.getDestinationStations(stationA);
+        SortedSet<Station> result = Trolleybus.getDestinationStations(stationA);
 
         // Assert        
         CollectionAssert.AreEqual(EXPECTED_RESAULT, result);
@@ -254,17 +230,14 @@ public sealed class BusTest
     public void getDestinationStations_OnlyOneStationSupported_ReturnsEmptyCollection()
     {
         // Arrange
-
-
         List<Station> supportedStations = new List<Station> { stationA };
 
         travelTimesMinutes = new int[,] { { 0 } };
-        travelPricesKM = new double[,] { { 0 } };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         // Act
-        SortedSet<Station> result = bus.getDestinationStations(stationA);
+        SortedSet<Station> result = Trolleybus.getDestinationStations(stationA);
 
         // Assert        
         Assert.AreEqual(result.Count, 0);
@@ -279,14 +252,13 @@ public sealed class BusTest
         List<Station> supportedStations = new List<Station> { stationA, stationB };
 
         travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
-        travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         Station stationD = new Station("Unsupported station", Zone.B_SUBURBS);
 
         // Act
-        double result = bus.getPriceKM(stationD, stationA);
+        double result = Trolleybus.getPriceKM(stationD, stationA);
 
         // Assert
         // No assert needed, the exception is expected
@@ -301,14 +273,13 @@ public sealed class BusTest
         List<Station> supportedStations = new List<Station> { stationA, stationB };
 
         travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
-        travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         Station stationD = new Station("Unsupported station", Zone.B_SUBURBS);
 
         // Act
-        double result = bus.getPriceKM(stationA, stationD);
+        double result = Trolleybus.getPriceKM(stationA, stationD);
 
         // Assert
         // No assert needed, the exception is expected
@@ -323,27 +294,26 @@ public sealed class BusTest
         List<Station> supportedStations = new List<Station> { stationA, stationB };
 
         travelTimesMinutes = new int[,] { { 0, 5 }, { 4, 0 } };
-        travelPricesKM = new double[,] { { 0, 1.2 }, { 1.3, 0 } };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         // Act
-        double result = bus.getPriceKM(stationA, stationA);
+        double result = Trolleybus.getPriceKM(stationA, stationA);
 
         // Assert
         // No assert needed, the exception is expected
     }
 
     [TestMethod]
-    [DynamicData(nameof(ValidBusTravelData))]
+    [DynamicData(nameof(ValidTrolleybusTravelData))]
     public void getPriceKM_ValidStationsDynamicData_ReturnsExpectedValues(Station startingStation, Station destinationStation, double expectedTravelTime, double expectedTravelPrice)
     {
         // Arrange
 
-        Bus bus = new Bus(StaticTestData.orderedBusStations, StaticTestData.busTravelTimesMinutes, StaticTestData.busTravelPricingKM);
+        Trolleybus Trolleybus = new Trolleybus(StaticTestData.orderedTrolleybusStations, StaticTestData.trolleybusTravelTimesMinutes, pricePerZoneTraveledKM);
 
         // Act
-        double resultTravelPrice = bus.getPriceKM(startingStation, destinationStation);
+        double resultTravelPrice = Trolleybus.getPriceKM(startingStation, destinationStation);
 
         // Assert
 
@@ -358,12 +328,12 @@ public sealed class BusTest
 
         List<Station> supportedStations = new List<Station> { stationA, stationB, stationC };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         var EXPECTED_RESAULT = new SortedSet<Station>(new StationLexicographicComparer()) { stationA, stationB, stationC };
 
         // Act
-        SortedSet<Station> result = bus.getStartingStations();
+        SortedSet<Station> result = Trolleybus.getStartingStations();
 
         // Assert        
         CollectionAssert.AreEqual(EXPECTED_RESAULT, result);
@@ -376,12 +346,12 @@ public sealed class BusTest
 
         List<Station> supportedStations = new List<Station> { stationC, stationA, stationB };
 
-        Bus bus = new Bus(supportedStations, travelTimesMinutes, travelPricesKM);
+        Trolleybus Trolleybus = new Trolleybus(supportedStations, travelTimesMinutes, pricePerZoneTraveledKM);
 
         var EXPECTED_RESAULT = new SortedSet<Station>(new StationLexicographicComparer()) { stationA, stationB, stationC };
 
         // Act
-        SortedSet<Station> result = bus.getStartingStations();
+        SortedSet<Station> result = Trolleybus.getStartingStations();
 
         // Assert
         CollectionAssert.AreEqual(EXPECTED_RESAULT, result);

@@ -12,6 +12,17 @@ namespace OptiRoute
 
         public Trolleybus(List<Station> supportedStations, int[,] travelTimesMinutes, double pricePerZoneTraveledKM)
         {
+
+            if (supportedStations.Distinct().Count() != supportedStations.Count)
+            {
+                throw new ArgumentException("The list of supported stations contains duplicates.");
+            }
+            
+            if (travelTimesMinutes.GetLength(0) != supportedStations.Count || travelTimesMinutes.GetLength(1) != supportedStations.Count)
+            {
+                throw new ArgumentException("The dimensions of travelTimesMinutes must match the number of supported stations.");
+            }
+            
             this.supportedStations = supportedStations;
             this.travelTimesMinutes = travelTimesMinutes;
             this.pricePerZoneTraveledKM = pricePerZoneTraveledKM;
@@ -41,21 +52,14 @@ namespace OptiRoute
 
         public SortedSet<Station> getDestinationStations(Station startingStation)
         {
-            SortedSet<Station> destinationStations = new SortedSet<Station>();
-            int startIndex = supportedStations.IndexOf(startingStation);
+            SortedSet<Station> destinationStations = new SortedSet<Station>(supportedStations, new StationLexicographicComparer());
 
-            if (startIndex == -1)
+            if (!supportedStations.Contains(startingStation))
             {
-                throw new ArgumentException("The starting station is not supported by this bus.");
+                throw new ArgumentException(message: $"Starting station {startingStation.Name} not supported.");
             }
 
-            for (int i = 0; i < travelTimesMinutes.GetLength(1); i++)
-            {
-                if (travelTimesMinutes[startIndex, i] != -1)
-                {
-                    destinationStations.Add(supportedStations[i]);
-                }
-            }
+            destinationStations.Remove(startingStation);
 
             return destinationStations;
         }

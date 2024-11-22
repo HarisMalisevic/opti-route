@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using OptiRoute;
 
 namespace TestProject;
 
 [TestClass]
+[ExcludeFromCodeCoverage]
 public sealed class TramTest
 {
 
