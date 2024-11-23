@@ -7,7 +7,7 @@ public static class TravelTimeOptimizer
     {
         if (transportationMethod == null)
         {
-            throw new ArgumentNullException("Transportation methods must not be null.");
+            throw new ArgumentException("Transportation methods must not be null.");
         }
 
         if (transportationMethod.Count == 0)
@@ -17,7 +17,7 @@ public static class TravelTimeOptimizer
 
         if (startingStation == null || destinationStation == null)
         {
-            throw new ArgumentNullException("Starting and destination stations must not be null.");
+            throw new ArgumentException("Starting and destination stations must not be null.");
         }
 
         double optimalTravelTime = double.MaxValue;
