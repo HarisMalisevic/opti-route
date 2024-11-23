@@ -29,7 +29,7 @@ public static class TravelTimeOptimizer
             {
                 travelTime = method.getCommuteDurationMinutes(startingStation, destinationStation);
             }
-            catch (ArgumentException)
+            catch (ArgumentException) // Station not supported by this transporation method
             {
 
                 continue;
