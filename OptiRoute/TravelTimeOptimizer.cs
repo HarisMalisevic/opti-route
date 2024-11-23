@@ -14,7 +14,7 @@ public static class TravelTimeOptimizer
         {
             throw new ArgumentException("At least one transportation method must be provided.");
         }
-        
+
         if (startingStation == null || destinationStation == null)
         {
             throw new ArgumentNullException("Starting and destination stations must not be null.");
