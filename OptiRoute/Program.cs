@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Security.Principal;
 
 namespace OptiRoute
 {
@@ -19,7 +20,7 @@ namespace OptiRoute
             Console.WriteLine("Hello, World!");
 
             // Prepare starting stations
-            List<Station> startingStations = prepareStartingStations(Program.staticTransportationMethods);
+            List<Station> startingStations = prepareStartingStations(staticTransportationMethods);
 
             // Print starting stations
             int index = 1;
@@ -41,7 +42,7 @@ namespace OptiRoute
             Console.WriteLine($"You have selected: {selectedStartingStation.Name}");
 
             // Prepare destination stations
-            List<Station> destinationStations = prepareDestinationStations(Program.staticTransportationMethods, selectedStartingStation);
+            List<Station> destinationStations = prepareDestinationStations(staticTransportationMethods, selectedStartingStation);
 
             // Print destination stations
             index = 1;
@@ -61,7 +62,26 @@ namespace OptiRoute
             Station selectedDestinationStation = destinationStations[selectedStationIndex - 1];
             Console.WriteLine($"You have selected: {selectedDestinationStation.Name}");
 
-            //TODO: Find the best route
+            //Find the best route
+
+            double optimalTravelTime = TravelTimeOptimizer.getOptimalTravelTimeMinutes(staticTransportationMethods, selectedStartingStation, selectedDestinationStation);
+
+            Console.WriteLine($"The optimal travel time is: {optimalTravelTime} minutes.");
+
+            // Prompt the user to try again or exit
+            Console.WriteLine("Would you like to find another route? (yes/no)");
+            string userResponse = Console.ReadLine().Trim().ToLower();
+
+            if (userResponse == "yes")
+            {
+                Main(args); // Restart the process
+            }
+            else
+            {
+                Console.WriteLine("Thank you for using OptiRoute. Goodbye!");
+                Environment.Exit(0); // Exit the program
+            }
+
         }
 
         static List<Station> prepareStartingStations(List<ITransportationMethod> transportationMethods)

@@ -31,7 +31,6 @@ public static class TravelTimeOptimizer
             }
             catch (ArgumentException) // Station not supported by this transporation method
             {
-
                 continue;
             }
 
